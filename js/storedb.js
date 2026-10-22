@@ -1,8 +1,19 @@
 var storedb = function(collectionName){
     collectionName = collectionName ? collectionName : 'default';
-    
+
     var err;
-    var cache = localStorage[collectionName] ? JSON.parse(localStorage[collectionName]) : [];
+    var cache = [];
+    chrome.storage.local.get(collectionName,function(res){
+        if(res){
+            try{
+                cache=JSON.parse(res);
+            }catch(e){
+                //
+            }
+
+        }
+    });
+
     var checkIdExist=function(checkId){
         for(var i = 0; i < cache.length; i++){
             if(cache[i]["_id"] == checkId){
@@ -28,7 +39,7 @@ var storedb = function(collectionName){
         insert: function(obj,callback){
             obj["_id"] = obj["_id"]&&!checkIdExist(obj["_id"])?obj["_id"]:this.createId();
             cache.push(obj);
-            localStorage.setItem(collectionName,JSON.stringify(cache));
+            chrome.storage.local.set({collectionName:JSON.stringify(cache)});
             if(callback)
                 callback(err,obj);
         },
@@ -57,7 +68,7 @@ var storedb = function(collectionName){
                     callback(err,result);
                 else
                     return result;
-            }     
+            }
         },
 
         update: function(obj,upsert,callback){
@@ -96,7 +107,7 @@ var storedb = function(collectionName){
                     }
                 }
             }
-            localStorage.setItem(collectionName,JSON.stringify(cache));
+            chrome.storage.local.set({collectionName:JSON.stringify(cache)});
             if(callback)
                 callback(err);
 
@@ -104,7 +115,7 @@ var storedb = function(collectionName){
 
         remove: function(obj,callback){
             if(arguments.length == 0){
-                localStorage.removeItem(collectionName);
+                chrome.storage.local.remove(collectionName);
             } else {
 
                 for(var key in obj){
@@ -114,12 +125,12 @@ var storedb = function(collectionName){
                         }
                     }
                 }
-                localStorage.setItem(collectionName, JSON.stringify(cache));
+                chrome.storage.local.set({collectionName:JSON.stringify(cache)});
             }
-            
+
             if(callback)
                 callback(err);
-            
+
         }
 
     };

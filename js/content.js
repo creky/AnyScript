@@ -10,7 +10,7 @@ String.prototype.trim = function() {
 	req.hostName = location.hostname;
 	req.url = location.href;
 	var checkCount=0;
-	chrome.extension.sendRequest(req, function(resp) {
+	chrome.runtime.sendMessage(req, function(resp) {
 		console.log("Receive response:", resp);
 		if (resp.status == 1) {
 			executeRules(resp.rules);

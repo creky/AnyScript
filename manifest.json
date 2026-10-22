@@ -1,23 +1,33 @@
 {
 	"name": "AnyScript",
-	"version": "1.1.3",
-	"manifest_version": 2,
+	"version": "1.1.5",
+	"manifest_version": 3,
 	"description": "AnyScript can execute any javascript from specified server or customed matched with url.",
 	"background": {
-		"scripts": ["js/storedb.js", "js/background.js"]
+		"service_worker": "service-worker.js"
 	},
 	"options_page": "options.html",
 	"icons": {
 		"128": "icon_128.png"
 	},
-	"browser_action": {
-		"default_icon": "icon_128.png"
+	"action": {
+		"default_icon": {
+			"128":"icon_128.png"
+		}
 	},
-	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"content_scripts": [{
 		"matches": ["http://*/*", "https://*/*"],
 		"js": ["js/jquery.min.js", "js/content.js"],
 		"all_frames": true
 	}],
-	"permissions": ["tabs","webRequest","webRequestBlocking","https://*/*","http://*/*"]
+	"host_permissions": ["http://*/*", "https://*/*"],
+	"permissions": [
+		"webRequest",
+		"activeTab",
+		"declarativeNetRequest",
+		"declarativeNetRequestWithHostAccess",
+		"declarativeNetRequestFeedback",
+		"storage",
+		"tabs"
+	]
 }
