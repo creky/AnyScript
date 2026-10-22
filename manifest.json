@@ -2,6 +2,7 @@
 	"name": "AnyScript",
 	"version": "1.1.5",
 	"manifest_version": 3,
+	"minimum_chrome_version": "145",
 	"description": "AnyScript can execute any javascript from specified server or customed matched with url.",
 	"background": {
 		"service_worker": "service-worker.js"
@@ -22,10 +23,8 @@
 	}],
 	"host_permissions": ["http://*/*", "https://*/*"],
 	"permissions": [
-		"webRequest",
 		"activeTab",
 		"declarativeNetRequest",
-		"declarativeNetRequestWithHostAccess",
 		"declarativeNetRequestFeedback",
 		"storage",
 		"tabs"

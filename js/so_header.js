@@ -7,21 +7,9 @@
 			search(document.getElementById('q').value);
 		}
 	},false);
-	var query=location.search;
-	if(query){
-		var so=query.substring(1).split("&");
-		var params={};
-		for(var i=0;i<so.length;i++){
-			var item=so[i].split("=");
-			if(item.length==2){
-				params[item[0]]=item[1];
-			}
-		}
-		var qu=params.q;
-		if(!qu){
-			return;
-		}
-		document.getElementById("q").value=decodeURIComponent(qu).replace(/\+/ig," ");
+	var qu=new URLSearchParams(location.search).get("q");
+	if(qu){
+		document.getElementById("q").value=qu;
 		search(qu);
 	}
 })();
@@ -29,11 +17,8 @@ function search(qu){
 	if(!qu){
 		return;
 	}
-	qu=qu.replace(/\#/ig,"%23");
-	//qu=encodeURIComponent(qu);
-	var bdurl="http://www.baidu.com/s?ie=UTF-8&wd="+qu;
-	//var ggurl="http://cn.bing.com/search?q="+qu;
+	qu=encodeURIComponent(qu);
+	var bdurl="https://www.baidu.com/s?ie=UTF-8&wd="+qu;
 	var ggurl="https://www.google.com/search?newwindow=1&q="+qu;
-	//var ggurl="http://www.gfsoso.net/?q="+qu;
 	parent.so(bdurl,ggurl);
 }
